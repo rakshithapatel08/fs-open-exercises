@@ -20,14 +20,26 @@ function App() {
   return (
     <>
      <h1>Give your feedback</h1>
-     <button onClick={handleGood}>good</button>
-     <button onClick={handleNeutral}>neutral</button>
-     <button onClick={handleBad}>bad</button>
+     <Button onClick={handleGood} text="good"/>
+     <Button onClick={handleNeutral} text="neutral"/>
+     <Button onClick={handleBad} text="bad"/>
 
      <h1>Statistics</h1>
      <p>good = {good}</p>
      <p>neutral = {neutral}</p>
      <p>bad = {bad}</p>
+     <p>total = {good + neutral + bad}</p>
+     <p>average = {(good-bad)/(good + neutral + bad)}</p>
+     <p>positive percentage = {good/(good + neutral + bad) *100} %</p>
+    </>
+  )
+}
+
+// refactoring to a button component
+const Button = (props)=>{
+  return(
+    <>
+    <button onClick={props.onClick}>{props.text}</button>
     </>
   )
 }
