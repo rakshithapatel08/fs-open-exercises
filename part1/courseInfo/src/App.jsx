@@ -1,8 +1,9 @@
 
 const App = () => {
-  const course = "Full Stack Web Development"
-  // array of objects
-  const parts = [
+  // single object containing properties that are strings , arrays
+  const course = {
+    name :"Full Stack Web Development",  
+    parts : [
     {
       name: "Introduction to React",
       exercise: 14
@@ -16,12 +17,13 @@ const App = () => {
       exercise: 7
     }
   ]
+}
 
   return (
     <>
       <Header course={course} />
-      <Content parts={parts} />
-      <Total parts={parts} />
+      <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </>
   )
 }
@@ -29,7 +31,7 @@ const App = () => {
 const Header = (props) => {
   return (
     <>
-      <h1>{props.course}</h1>
+      <h1>{props.course.name}</h1>
     </>
   )
 }
