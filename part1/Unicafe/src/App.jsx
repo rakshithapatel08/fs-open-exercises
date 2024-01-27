@@ -39,9 +39,21 @@ const Button = (props) => {
 
 const Statistics = ({ good, bad, neutral }) => {
   // destructured the props object 
+
+  //conditional rendering
+  let total = good + bad + neutral;
+  if(total===0)
+  {
+    return(
+      <>
+      <h1>Statistics</h1>
+      <p>No feedbacks given</p>
+      </>
+    )
+  }
   return (
     <>
-      <h1>Statistics</h1>
+      <h1>Statistics</h1>      
       <p>good = {good}</p>
       <p>neutral = {neutral}</p>
       <p>bad = {bad}</p>
