@@ -3,6 +3,7 @@ import { useState } from "react"
 function App() {
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState([0,0,0,0,0,0,0,0])
+  const [maxIndex, setMaxIndex] = useState(0)
   const anecdotes = [
     'If it hurts, do it more often.',
     'Adding manpower to a late software project makes it later!',
@@ -19,19 +20,31 @@ function App() {
     console.log(x);
     setSelected(x);    
   }
+
   const handleVote = ()=>{
     console.log(votes)
     let newVotesArray = [...votes]  
     newVotesArray[selected]+=1;
     console.log(newVotesArray)
     setVotes(newVotesArray);
+    MaxVotes();
+  }
+  
+  const MaxVotes = ()=>{
+     let maxElement = Math.max(...votes)
+     let index = votes.indexOf(maxElement)
+     setMaxIndex(index)
   }
   return (
     <>
+    <h1>Anecdote of the day</h1>
      <p>{anecdotes[selected]}</p>
      <p>This anecdote has {votes[selected]} votes</p>
      <button onClick={handleSelect}>next anecdote</button>
      <button onClick={handleVote}>vote</button>
+     <h1>Anecdote with highest votes</h1>
+     <p>{anecdotes[maxIndex]}</p>
+     <p>with {votes[maxIndex]} votes</p>
     </>
   )
 }
