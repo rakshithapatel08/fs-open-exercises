@@ -42,24 +42,33 @@ const Statistics = ({ good, bad, neutral }) => {
 
   //conditional rendering
   let total = good + bad + neutral;
-  if(total===0)
-  {
-    return(
+  if (total === 0) {
+    return (
       <>
-      <h1>Statistics</h1>
-      <p>No feedbacks given</p>
+        <h1>Statistics</h1>
+        <p>No feedbacks given</p>
       </>
     )
   }
   return (
     <>
-      <h1>Statistics</h1>      
-      <p>good = {good}</p>
-      <p>neutral = {neutral}</p>
-      <p>bad = {bad}</p>
-      <p>total = {good + neutral + bad}</p>
-      <p>average = {(good - bad) / (good + neutral + bad)}</p>
-      <p>positive percentage = {good / (good + neutral + bad) * 100} %</p>
+      <h1>Statistics</h1>
+      <StatisticLine text="good" value={good} />
+      <StatisticLine text="good" value={good} />
+      <StatisticLine text="neutral" value={neutral} />
+      <StatisticLine text="bad" value={bad} />
+      <StatisticLine text="total" value={good + neutral + bad} />
+      <StatisticLine text="average" value={(good - bad) / (good + neutral + bad)} />
+      <StatisticLine text="positive percentage" value={good / (good + neutral + bad) * 100 + " %"} />
+    </>
+  )
+}
+
+// refactoring a StatisticLine component
+const StatisticLine = ({ text, value }) => {
+  return (
+    <>
+      <p>{text} = {value}</p>
     </>
   )
 }
