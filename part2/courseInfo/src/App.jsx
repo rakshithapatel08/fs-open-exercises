@@ -44,7 +44,7 @@ const App = () => {
       ]
     }
   ]
-
+ // seperated the components to course already
   return (
     <div>      
      {courses.map((course=> <Course course={course} key={course.id}/>))}
