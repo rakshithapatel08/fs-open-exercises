@@ -6,9 +6,13 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault();
-    console.log(event.target)
-    console.log(newname)
-    setPersons(persons.concat({ name: newname }));
+     persons.forEach(person => {
+      console.log(newname)
+      if(person.name.toLowerCase() === newname.toLowerCase()){
+        alert(`${newname} already exists in the phonebook`)
+      }
+      else setPersons(persons.concat({ name: newname }));
+    });
   }
 
   return (
