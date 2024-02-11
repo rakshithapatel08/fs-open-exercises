@@ -6,20 +6,27 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault();
-     persons.forEach(person => {
+    let flag = 0;
+    persons.forEach(person => {
       console.log(newname)
-      if(person.name.toLowerCase() === newname.toLowerCase()){
+      if (person.name.toLowerCase() === newname.toLowerCase()) {
         alert(`${newname} already exists in the phonebook`)
+        flag = 1; 
+        setNewname("")      
       }
-      else setPersons(persons.concat({ name: newname }));
+
     });
+    if (flag === 0) {
+      setPersons(persons.concat({ name: newname }));
+      setNewname("")
+    }
   }
 
   return (
     <>
       <h1>Phonebook</h1>
       <form onSubmit={addName}>
-        name : <input type="text" placeholder="add new name" onChange={(e) => setNewname(e.target.value)} />
+        name : <input type="text" placeholder="add new name" value={newname} onChange={(e) => setNewname(e.target.value)} />
         <button type="submit">Add</button>
       </form>
       <h1>Numbers</h1>
