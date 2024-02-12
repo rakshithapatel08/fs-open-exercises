@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import axios from "axios"
+import personsData from "../persons.js"
 import Filter from "./components/Filter"
 import Form from "./components/Form"
 import Display from "./components/Display"
@@ -11,8 +11,8 @@ const App = () => {
   const [filter, setFilter] = useState("")
 
   useEffect(()=>{
-    axios.get("http://localhost:3001/persons")
-    .then(res=>setPersons(res.data))
+    personsData.getPersons()
+    .then(result=>setPersons(result))
   },[persons])
   
   const filteredArray = persons.filter((person)=>person.name.toLowerCase().includes(filter.toLowerCase()))
@@ -31,10 +31,10 @@ const App = () => {
 
     });
     if (flag === 0) {
-      axios.post("http://localhost:3001/persons",{ name: newname, number: newnumber })
-      .then(res=>{
-        console.log(res)
-        setPersons(persons.concat(res.data));
+      personsData.addPersons({ name: newname, number: newnumber })
+      .then(result=>{
+        console.log(result)
+        setPersons(persons.concat(result));
         setNewname("")
         setNewnumber("")
       })
