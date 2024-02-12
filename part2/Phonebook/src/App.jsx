@@ -13,7 +13,7 @@ const App = () => {
   useEffect(()=>{
     axios.get("http://localhost:3001/persons")
     .then(res=>setPersons(res.data))
-  },[])
+  },[persons])
   
   const filteredArray = persons.filter((person)=>person.name.toLowerCase().includes(filter.toLowerCase()))
 
@@ -31,9 +31,14 @@ const App = () => {
 
     });
     if (flag === 0) {
-      setPersons(persons.concat({ name: newname, number: newnumber }));
-      setNewname("")
-      setNewnumber("")
+      axios.post("http://localhost:3001/persons",{ name: newname, number: newnumber })
+      .then(res=>{
+        console.log(res)
+        setPersons(persons.concat(res.data));
+        setNewname("")
+        setNewnumber("")
+      })
+     
     }
   }
 
