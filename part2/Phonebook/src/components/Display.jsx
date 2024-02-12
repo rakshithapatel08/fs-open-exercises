@@ -1,12 +1,13 @@
-import axios from "axios"
+import personsData from "../../persons"
+
 const Display = ({filteredArray}) => {
 
   const removePerson = (id,name)=>{
     console.log(id)
     const confirmation = window.confirm(`delete ${name}?`)
     if(confirmation){
-      axios.delete(`http://localhost:3001/persons/${id}`)
-      .then(res=>console.log(`${res.data.name} was deleted`))
+      personsData.removePersons(id)
+      .then(result=>console.log(`${result.name} was deleted`))
     }    
   }
   return (
