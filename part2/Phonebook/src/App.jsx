@@ -4,12 +4,16 @@ import Filter from "./components/Filter"
 import Form from "./components/Form"
 import Display from "./components/Display"
 import axios from "axios"
+import "./app.css"
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newname, setNewname] = useState("")
   const [newnumber,setNewnumber] = useState("")
   const [filter, setFilter] = useState("")
+  const [addNotify,setAddNotify] = useState(null)
+  const [deleteNotify,setDeleteNotify] = useState(null)
+  const [updateNotify,setUpdateNotify] = useState(null)
 
   useEffect(()=>{
     personsData.getPersons()
@@ -31,6 +35,8 @@ const App = () => {
           axios.put(`http://localhost:3001/persons/${person.id}`,changedPerson)
           .then(res=>res.data)
           .then(data => setPersons(persons.map(p => p.id != person.id ? p : data)))
+          setUpdateNotify(`${person.name} is updated with ${newnumber}`)
+          setInterval(()=>setUpdateNotify(null),3000)
         }
         flag = 1; 
         setNewname("") 
@@ -39,6 +45,8 @@ const App = () => {
 
     });
     if (flag === 0) {
+      setAddNotify(`Added ${newname}`)
+      setTimeout(()=>setAddNotify(null),3000)
       personsData.addPersons({ name: newname, number: newnumber })
       .then(result=>{
         console.log(result)
@@ -53,11 +61,14 @@ const App = () => {
   return (
     <>
       <h1>Phonebook</h1>
+      {(addNotify!=null)?<div className="addNotify">{addNotify}</div> :<p></p>}
+      {(deleteNotify!=null)? <div className="deleteNotify">{deleteNotify}</div> : <p></p>}
+      {(updateNotify!=null)? <div className="updateNotify">{updateNotify}</div> : <p></p>}         
       <Filter filter={filter} setFilter={setFilter}/>
       <h2>Add new numbers</h2>
       <Form addName={addName} newname={newname} setNewname={setNewname} newnumber={newnumber} setNewnumber={setNewnumber}/>
       <h2>Numbers</h2>     
-     <Display filteredArray={filteredArray}/>
+     <Display filteredArray={filteredArray} setDeleteNotify={setDeleteNotify}/>
     </>
   )
 }
