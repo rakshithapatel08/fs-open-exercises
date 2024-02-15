@@ -14,6 +14,7 @@ const App = () => {
   const [addNotify,setAddNotify] = useState(null)
   const [deleteNotify,setDeleteNotify] = useState(null)
   const [updateNotify,setUpdateNotify] = useState(null)
+  const [error,setError] = useState(null)
 
   useEffect(()=>{
     personsData.getPersons()
@@ -35,8 +36,12 @@ const App = () => {
           axios.put(`http://localhost:3001/persons/${person.id}`,changedPerson)
           .then(res=>res.data)
           .then(data => setPersons(persons.map(p => p.id != person.id ? p : data)))
-          setUpdateNotify(`${person.name} is updated with ${newnumber}`)
-          setInterval(()=>setUpdateNotify(null),3000)
+          .then(()=> setUpdateNotify(`${person.name} is updated with ${newnumber}`))
+          .then(()=> setInterval(()=>setUpdateNotify(null),3000))
+          .catch(()=>{setError(`Information of ${newname} is removed from the server`)
+                    setTimeout(()=>setError(null),3000)
+                  })      
+                   
         }
         flag = 1; 
         setNewname("") 
@@ -63,7 +68,8 @@ const App = () => {
       <h1>Phonebook</h1>
       {(addNotify!=null)?<div className="addNotify">{addNotify}</div> :<p></p>}
       {(deleteNotify!=null)? <div className="deleteNotify">{deleteNotify}</div> : <p></p>}
-      {(updateNotify!=null)? <div className="updateNotify">{updateNotify}</div> : <p></p>}         
+      {(updateNotify!=null)? <div className="updateNotify">{updateNotify}</div> : <p></p>} 
+      {(error!=null)?<div className="error">{error}</div>:<p></p>}        
       <Filter filter={filter} setFilter={setFilter}/>
       <h2>Add new numbers</h2>
       <Form addName={addName} newname={newname} setNewname={setNewname} newnumber={newnumber} setNewnumber={setNewnumber}/>
