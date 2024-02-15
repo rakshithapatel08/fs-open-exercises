@@ -3,6 +3,7 @@ import personsData from "../persons.js"
 import Filter from "./components/Filter"
 import Form from "./components/Form"
 import Display from "./components/Display"
+import axios from "axios"
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -23,7 +24,14 @@ const App = () => {
     persons.forEach(person => {
       console.log(newname)
       if (person.name.toLowerCase() === newname.toLowerCase()) {
-        alert(`${newname} already exists in the phonebook`)
+        const confirmUpdate = window.confirm(`${newname} already exists in the phonebook,replace the old number with new one?`)
+        if(confirmUpdate){
+          const changedPerson = {...person,number:newnumber}
+          console.log(changedPerson)
+          axios.put(`http://localhost:3001/persons/${person.id}`,changedPerson)
+          .then(res=>res.data)
+          .then(data => setPersons(persons.map(p => p.id != person.id ? p : data)))
+        }
         flag = 1; 
         setNewname("") 
         setNewnumber("")     
