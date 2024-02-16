@@ -13,7 +13,6 @@ const Countries = ({ filteredArray }) => {
                 <p> capital: {filteredArray[0].capital[0]}</p>
                 <p> area: {filteredArray[0].area}</p>
             </div>
-            <h3>languages</h3>
             <ul>
                 {values.map((value) => <li key={value}>{value}</li>)}
             </ul>

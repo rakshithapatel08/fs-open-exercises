@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import Countries from "./components/Countries"
+import CountryDetails from "./components/CountryDetails"
 
 function App() {
   const [input, setInput] = useState("")
@@ -17,7 +18,7 @@ function App() {
   return (
     <>
       <p>find countries : <input type="text" onChange={(e) => setInput(e.target.value)} /></p>
-      {filteredArray.length > 10 ? <p>Too many matches specify some more filters</p> : (filteredArray.length === 1) ? <Countries filteredArray={filteredArray} /> : filteredArray.map((country) => <p key={country.name.common}>{country.name.common}</p>)}
+      {filteredArray.length > 10 ? <p>Too many matches specify some more filters</p> : (filteredArray.length === 1) ? <Countries filteredArray={filteredArray} /> : filteredArray.map((country) => <CountryDetails key={country.name.common} country={country}/>)}
     </>
   )
 }
