@@ -9,7 +9,7 @@ const Display = ({filteredArray,setDeleteNotify}) => {
       personsData.removePersons(id)
       .then(result=>console.log(`${result.name} was deleted`))
       .then(()=>setDeleteNotify(`${name} was deleted`))
-      .then(()=>setInterval(()=>setDeleteNotify(null),5000))
+      .then(()=>setTimeout(()=>setDeleteNotify(null),5000))
     }    
   }
   return (

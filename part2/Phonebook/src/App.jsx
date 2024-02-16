@@ -37,7 +37,7 @@ const App = () => {
           .then(res=>res.data)
           .then(data => setPersons(persons.map(p => p.id != person.id ? p : data)))
           .then(()=> setUpdateNotify(`${person.name} is updated with ${newnumber}`))
-          .then(()=> setInterval(()=>setUpdateNotify(null),3000))
+          .then(()=> setTimeout(()=>setUpdateNotify(null),3000))
           .catch(()=>{setError(`Information of ${newname} is removed from the server`)
                     setTimeout(()=>setError(null),3000)
                   })      
