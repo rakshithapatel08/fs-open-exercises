@@ -87,6 +87,12 @@ app.post("/api/persons",(req,res)=>{
     }  
 })
 
+const unknownEndpoint = (req,res)=>{
+    res.status(404).send({error:"Unknown Endpoint"})
+}
+
+app.use(unknownEndpoint)
+
 const PORT = 3001
 app.listen(PORT,()=>{
     console.log("server running successfully")
