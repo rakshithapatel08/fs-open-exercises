@@ -1,4 +1,5 @@
-const http = require("http")
+const express = require("express")
+const app = express()
 
 const persons = [
     { 
@@ -23,11 +24,15 @@ const persons = [
     }
 ]
 
-const app = http.createServer((request,response)=>{
-    response.writeHead(200,{"Content-Type":"application/json"})
-    response.end(JSON.stringify(persons))
+app.get("/",(req,res)=>{
+    res.send("<h1>phonebook backend</h1>")
 })
 
-app.listen(3001,()=>{
+app.get("/api/persons",(req,res)=>{
+    res.json(persons)
+})
+
+const PORT = 3001
+app.listen(PORT,()=>{
     console.log("server running successfully")
 })
