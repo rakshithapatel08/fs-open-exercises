@@ -57,11 +57,24 @@ app.delete("/api/persons/:id",(req,res)=>{
 })
 
 app.post("/api/persons",(req,res)=>{
+    // the name, number is received from req.body
     const person = req.body
+    const existingPerson = persons.find(p => person.name === p.name)
     person.id = Math.floor(Math.random()*100000000+1)
     console.log(person)
-    persons = persons.concat(person)
-    res.json(person)
+    if(!person.name){
+        res.status(400).json({error:"Name is missing"})
+    }
+    if(!person.number){
+        res.status(400).json({error:"Number is missing"})
+    }
+    if(existingPerson){
+        res.status(400).json({error:"Name must be unique"})
+    }
+    else{
+        persons = persons.concat(person)
+        res.json(person)
+    }  
 })
 
 const PORT = 3001
