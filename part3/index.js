@@ -1,7 +1,9 @@
 const express = require("express")
 const app = express()
 
-const persons = [
+app.use(express.json())
+
+let persons = [
     { 
       "id": 1,
       "name": "Arto Hellas", 
@@ -32,7 +34,7 @@ app.get("/api/persons",(req,res)=>{
     res.json(persons)
 })
 
-app.get("/info",(req,res)=>{
+app.get("/api/info",(req,res)=>{
     const requestTime = new Date();
     res.send(`<div><p>The phonebook has info of ${persons.length} people</p><br>${requestTime}</div>`)
 })
@@ -50,8 +52,16 @@ app.get("/api/persons/:id",(req,res)=>{
 
 app.delete("/api/persons/:id",(req,res)=>{
     const id = Number(req.params.id)
-    let filterpersons = persons.filter(person => person.id !== id)
+    persons = persons.filter(person => person.id !== id)
     res.status(204).end()
+})
+
+app.post("/api/persons",(req,res)=>{
+    const person = req.body
+    person.id = Math.floor(Math.random()*100000000+1)
+    console.log(person)
+    persons = persons.concat(person)
+    res.json(person)
 })
 
 const PORT = 3001
