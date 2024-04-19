@@ -1,9 +1,11 @@
 const express = require("express")
 const morgan = require("morgan")
 const cors = require("cors")
+const dotenv = require("dotenv")
 
 const app = express()
 
+dotenv.config()
 app.use(cors())
 app.use(express.json())
 
@@ -97,7 +99,7 @@ const unknownEndpoint = (req,res)=>{
 
 app.use(unknownEndpoint)
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT,()=>{
-    console.log("server running successfully")
+    console.log(`server running successfully at ${PORT}`)
 })
