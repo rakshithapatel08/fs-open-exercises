@@ -1,13 +1,13 @@
 import personsData from "../../persons"
 
-const Display = ({filteredArray,setDeleteNotify}) => {
+const Display = ({filteredArray,setDeleteNotify,setDeletedPerson}) => {
 
   const removePerson = (id,name)=>{
     console.log(id)
     const confirmation = window.confirm(`delete ${name}?`)
     if(confirmation){            
       personsData.removePersons(id)
-      .then(result=>console.log(`${result.name} was deleted`))
+      .then(result=>setDeletedPerson(result[0]))
       .then(()=>setDeleteNotify(`${name} was deleted`))
       .then(()=>setTimeout(()=>setDeleteNotify(null),5000))
     }    

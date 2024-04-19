@@ -8,6 +8,7 @@ import "./app.css"
 
 const App = () => {
   const [persons, setPersons] = useState([])
+  const [deletedPerson, setDeletedPerson] = useState(null)
   const [newname, setNewname] = useState("")
   const [newnumber,setNewnumber] = useState("")
   const [filter, setFilter] = useState("")
@@ -19,7 +20,7 @@ const App = () => {
   useEffect(()=>{
     personsData.getPersons()
     .then(result=>setPersons(result))
-  },[persons])
+  },[deletedPerson])
   
   const filteredArray = persons.filter((person)=>person.name.toLowerCase().includes(filter.toLowerCase()))
 
@@ -33,7 +34,7 @@ const App = () => {
         if(confirmUpdate){
           const changedPerson = {...person,number:newnumber}
           console.log(changedPerson)
-          axios.put(`http://localhost:3001/persons/${person.id}`,changedPerson)
+          axios.put(`http://localhost:3001/api/persons/${person.id}`,changedPerson)
           .then(res=>res.data)
           .then(data => setPersons(persons.map(p => p.id != person.id ? p : data)))
           .then(()=> setUpdateNotify(`${person.name} is updated with ${newnumber}`))
@@ -74,7 +75,7 @@ const App = () => {
       <h2>Add new numbers</h2>
       <Form addName={addName} newname={newname} setNewname={setNewname} newnumber={newnumber} setNewnumber={setNewnumber}/>
       <h2>Numbers</h2>     
-     <Display filteredArray={filteredArray} setDeleteNotify={setDeleteNotify}/>
+     <Display filteredArray={filteredArray} setDeleteNotify={setDeleteNotify} setDeletedPerson={setDeletedPerson}/>
     </>
   )
 }

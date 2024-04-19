@@ -1,8 +1,10 @@
 const express = require("express")
 const morgan = require("morgan")
+const cors = require("cors")
 
 const app = express()
 
+app.use(cors())
 app.use(express.json())
 
 //logs the body for post requests
@@ -62,8 +64,10 @@ app.get("/api/persons/:id",(req,res)=>{
 
 app.delete("/api/persons/:id",(req,res)=>{
     const id = Number(req.params.id)
+    let deletedPerson = persons.filter(person => person.id == id)
     persons = persons.filter(person => person.id !== id)
-    res.status(204).end()
+    console.log(deletedPerson)
+    res.json(deletedPerson)
 })
 
 app.post("/api/persons",(req,res)=>{
@@ -73,17 +77,17 @@ app.post("/api/persons",(req,res)=>{
     person.id = Math.floor(Math.random()*100000000+1)
     console.log(person)
     if(!person.name){
-        res.status(400).json({error:"Name is missing"})
+        return res.status(400).json({error:"Name is missing"})
     }
     if(!person.number){
-        res.status(400).json({error:"Number is missing"})
+       return res.status(400).json({error:"Number is missing"})
     }
     if(existingPerson){
-        res.status(400).json({error:"Name must be unique"})
+       return res.status(400).json({error:"Name must be unique"})
     }
     else{
         persons = persons.concat(person)
-        res.json(person)
+        return res.json(person)
     }  
 })
 
