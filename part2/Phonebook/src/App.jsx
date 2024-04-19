@@ -34,7 +34,7 @@ const App = () => {
         if(confirmUpdate){
           const changedPerson = {...person,number:newnumber}
           console.log(changedPerson)
-          axios.put(`http://localhost:3001/api/persons/${person.id}`,changedPerson)
+          axios.put(`/api/persons/${person.id}`,changedPerson)
           .then(res=>res.data)
           .then(data => setPersons(persons.map(p => p.id != person.id ? p : data)))
           .then(()=> setUpdateNotify(`${person.name} is updated with ${newnumber}`))
