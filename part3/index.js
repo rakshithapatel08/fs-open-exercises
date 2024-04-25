@@ -23,6 +23,7 @@ app.get("/",(req,res)=>{
 })
 
 app.get("/api/persons",(req,res)=>{
+    // contacts retreived from database
     Contact.find({}).then(persons => res.json(persons))    
 })
 
@@ -40,6 +41,7 @@ app.get("/api/persons/:id",(req,res)=>{
 })
 
 app.delete("/api/persons/:id",(req,res)=>{
+    // handling delete route -- contact is deleted from database
     const id = req.params.id
     Contact.findByIdAndDelete(id)
     .then((result)=>console.log(result,"deleted successfully"))
@@ -47,6 +49,7 @@ app.delete("/api/persons/:id",(req,res)=>{
 })
 
 app.post("/api/persons",(req,res)=>{
+    //contacts added to database
     // the name, number is received from req.body
     const person = req.body
     console.log(person)
