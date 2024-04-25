@@ -28,33 +28,27 @@ app.get("/api/persons",(req,res)=>{
 
 app.get("/api/info",(req,res)=>{
     const requestTime = new Date();
-    res.send(`<div><p>The phonebook has info of ${persons.length} people</p><br>${requestTime}</div>`)
+    Contact.find({}).then(persons => 
+    res.send(`<div><p>The phonebook has info of ${persons.length} people</p><br>${requestTime}</div>`))
 })
 
 app.get("/api/persons/:id",(req,res)=>{
-    const id = Number(req.params.id)
-    const person = persons.find(person=>person.id === id)
-    if(person){
-        res.json(person)
-    }
-    else{
-        res.status(404).send("Person not found")
-    }    
+    const id = req.params.id
+    Contact.findById(id)
+    .then(person => res.json(person))
+    .catch(()=>res.status(404).send("Person not found"))    
 })
 
 app.delete("/api/persons/:id",(req,res)=>{
-    const id = Number(req.params.id)
-    let deletedPerson = persons.filter(person => person.id == id)
-    persons = persons.filter(person => person.id !== id)
-    console.log(deletedPerson)
-    res.json(deletedPerson)
+    const id = req.params.id
+    Contact.findByIdAndDelete(id)
+    .then((result)=>console.log(result,"deleted successfully"))
+    .catch((error)=>console.log(error))
 })
 
 app.post("/api/persons",(req,res)=>{
     // the name, number is received from req.body
     const person = req.body
-    const existingPerson = persons.find(p => person.name === p.name)
-    person.id = Math.floor(Math.random()*100000000+1)
     console.log(person)
     if(!person.name){
         return res.status(400).json({error:"Name is missing"})
@@ -62,12 +56,15 @@ app.post("/api/persons",(req,res)=>{
     if(!person.number){
        return res.status(400).json({error:"Number is missing"})
     }
-    if(existingPerson){
-       return res.status(400).json({error:"Name must be unique"})
-    }
+    // if(existingPerson){
+    //    return res.status(400).json({error:"Name must be unique"})
+    // }
     else{
-        persons = persons.concat(person)
-        return res.json(person)
+        const newPerson = new Contact({
+            name:person.name,
+            number:person.number
+        })
+        newPerson.save().then(savedPerson =>res.json(savedPerson))
     }  
 })
 

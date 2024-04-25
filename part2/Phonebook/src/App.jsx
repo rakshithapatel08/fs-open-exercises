@@ -23,7 +23,7 @@ const App = () => {
   },[deletedPerson])
   
   const filteredArray = persons.filter((person)=>person.name.toLowerCase().includes(filter.toLowerCase()))
-
+  console.log(filteredArray)
   const addName = (event) => {
     event.preventDefault();
     let flag = 0;
