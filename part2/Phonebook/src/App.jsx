@@ -23,18 +23,19 @@ const App = () => {
   },[deletedPerson])
   
   const filteredArray = persons.filter((person)=>person.name.toLowerCase().includes(filter.toLowerCase()))
-  console.log(filteredArray)
+  // console.log(filteredArray)
   const addName = (event) => {
     event.preventDefault();
     let flag = 0;
     persons.forEach(person => {
-      console.log(newname)
+      // console.log(newname)
       if (person.name.toLowerCase() === newname.toLowerCase()) {
         const confirmUpdate = window.confirm(`${newname} already exists in the phonebook,replace the old number with new one?`)
         if(confirmUpdate){
           const changedPerson = {...person,number:newnumber}
           console.log(changedPerson)
-          axios.put(`/api/persons/${person.id}`,changedPerson)
+          console.log(person._id)
+          axios.put(`/api/persons/${person._id}`,changedPerson)
           .then(res=>res.data)
           .then(data => setPersons(persons.map(p => p.id != person.id ? p : data)))
           .then(()=> setUpdateNotify(`${person.name} is updated with ${newnumber}`))
@@ -55,7 +56,7 @@ const App = () => {
       setTimeout(()=>setAddNotify(null),3000)
       personsData.addPersons({ name: newname, number: newnumber })
       .then(result=>{
-        console.log(result)
+        // console.log(result)
         setPersons(persons.concat(result));
         setNewname("")
         setNewnumber("")

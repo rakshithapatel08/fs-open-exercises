@@ -56,6 +56,20 @@ app.delete("/api/persons/:id", (req, res, next) => {
         .catch((error) => next(error))
 })
 
+app.put("/api/persons/:id",(req,res,next)=>{
+    // handling update contacts
+    const id = req.params.id
+    const newContact = req.body
+
+    const updatedContact = {
+        name:newContact.name,
+        number:newContact.number
+    }
+    Contact.findByIdAndUpdate(id,updatedContact,{new:true})
+    .then(person => res.status(200).json(person))
+    .catch(error => next(error))
+})
+
 app.post("/api/persons", (req, res) => {
     //contacts added to database
     // the name, number is received from req.body
