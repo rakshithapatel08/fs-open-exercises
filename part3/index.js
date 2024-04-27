@@ -35,10 +35,16 @@ app.get("/api/info", (req, res) => {
 
 app.get("/api/persons/:id", (req, res, next) => {
     const id = req.params.id
+    // response contains required fields only
     Contact.findById(id)
         .then(person => {
+            const responseData = {
+                name:person.name,
+                id:person._id,
+                number:person.number
+            }
             if (person) {
-                res.json(person)
+                res.json(responseData)
             }
             else {
                 res.status(404).end()
