@@ -52,7 +52,7 @@ const App = () => {
 
     });
     if (flag === 0) {      
-      personsData.addPersons({ name: newname, number: newnumber })
+      personsData.addPersons({ name: newname, number:newnumber})
       .then(result=>{
         // console.log(result)
         setAddNotify(`Added ${newname}`)

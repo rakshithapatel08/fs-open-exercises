@@ -80,7 +80,7 @@ app.post("/api/persons", (req, res,next) => {
     //contacts added to database
     // the name, number is received from req.body
     const person = req.body
-    console.log(person)
+    // console.log(person,req.body)
     if (!person.name) {
         return res.status(400).json({ error: "Name is missing" })
     }

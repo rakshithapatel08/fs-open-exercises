@@ -17,7 +17,13 @@ const contactSchema = new mongoose.Schema({
         required:true
     },
     number: {
-        type:Number,
+        type:String,
+        minLength:8,
+        validate:{
+            validator:function(v){
+                return /\d{2,3}-\d/.test(v)
+            }
+        },
         required:true
     }
 })
