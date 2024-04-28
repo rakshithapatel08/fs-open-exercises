@@ -11,8 +11,15 @@ mongoose.connect(url)
 .catch((error)=>console.log(error.message))
 
 const contactSchema = new mongoose.Schema({
-    name:String,
-    number: Number
+    name:{
+        type:String,
+        minLength:3,
+        required:true
+    },
+    number: {
+        type:Number,
+        required:true
+    }
 })
 
 module.exports = mongoose.model("Contact",contactSchema)

@@ -71,12 +71,12 @@ app.put("/api/persons/:id",(req,res,next)=>{
         name:newContact.name,
         number:newContact.number
     }
-    Contact.findByIdAndUpdate(id,updatedContact,{new:true})
+    Contact.findByIdAndUpdate(id,updatedContact,{new:true,runValidators:true,context:"query"})
     .then(person => res.status(200).json(person))
     .catch(error => next(error))
 })
 
-app.post("/api/persons", (req, res) => {
+app.post("/api/persons", (req, res,next) => {
     //contacts added to database
     // the name, number is received from req.body
     const person = req.body
@@ -95,7 +95,9 @@ app.post("/api/persons", (req, res) => {
             name: person.name,
             number: person.number
         })
-        newPerson.save().then(savedPerson => res.json(savedPerson))
+        newPerson.save()
+        .then(savedPerson => res.json(savedPerson))
+        .catch((error)=>next(error))
     }
 })
 
@@ -109,6 +111,9 @@ const errorHandler = (error,req,res,next) =>{
     console.log(error)
     if(error.name === "CastError"){
         return res.status(400).send({ error: 'malformatted id' })
+    }
+    else if(error.name === "ValidationError"){
+        return res.status(400).send({ error : error.message})
     }
     next(error)
 }

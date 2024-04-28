@@ -40,7 +40,7 @@ const App = () => {
           .then(data => setPersons(persons.map(p => p.id != person.id ? p : data)))
           .then(()=> setUpdateNotify(`${person.name} is updated with ${newnumber}`))
           .then(()=> setTimeout(()=>setUpdateNotify(null),3000))
-          .catch(()=>{setError(`Information of ${newname} is removed from the server`)
+          .catch(()=>{setError(`Information of ${newname} is not updated`)
                     setTimeout(()=>setError(null),3000)
                   })      
                    
@@ -51,17 +51,20 @@ const App = () => {
       }
 
     });
-    if (flag === 0) {
-      setAddNotify(`Added ${newname}`)
-      setTimeout(()=>setAddNotify(null),3000)
+    if (flag === 0) {      
       personsData.addPersons({ name: newname, number: newnumber })
       .then(result=>{
         // console.log(result)
+        setAddNotify(`Added ${newname}`)
+        setTimeout(()=>setAddNotify(null),3000)
         setPersons(persons.concat(result));
         setNewname("")
         setNewnumber("")
       })
-     
+      .catch((error)=>{
+        setError(error.response.data.error)
+        setTimeout(()=>setError(null),3000)
+      })
     }
   }
 
