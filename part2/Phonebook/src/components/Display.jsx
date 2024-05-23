@@ -8,6 +8,7 @@ const Display = ({filteredArray,setDeleteNotify,setDeletedPerson}) => {
     if(confirmation){            
       personsData.removePersons(_id)
       .then(result=>setDeletedPerson(result[0]))
+      // filter put deleted person??
       .then(()=>setDeleteNotify(`${name} was deleted`))
       .then(()=>setTimeout(()=>setDeleteNotify(null),5000))
     }    
