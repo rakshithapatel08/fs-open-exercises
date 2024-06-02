@@ -79,7 +79,6 @@ describe("author with highest likes", () => {
           ]
 
           let result = mostLikes(blogs)
-          console.log(result)
           assert.deepStrictEqual(result,{
             author:"Edsger W. Dijkstra",
             likes:17
