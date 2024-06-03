@@ -25,6 +25,14 @@ test.only('the first note is about HTTP methods', async () => {
     assert.strictEqual(contents.includes('HTML is easy'), true)
   })
 
+test.only("format of the unique identifier is checked",async ()=>{
+    const response = await api.get("/api/blogs")
+     .expect(200)
+     .expect("Content-Type",/application\/json/)
+     
+     assert(response.body[0].id)
+})
+
 after(()=>{
     mongoose.connection.close()
 })

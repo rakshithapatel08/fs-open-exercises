@@ -17,14 +17,22 @@ mongoose.connect(url)
     url: String,
     likes: Number
   })
+
+  blogSchema.set('toJSON', {
+    transform: (document, returnedObject) => {
+      returnedObject.id = returnedObject._id.toString()
+      delete returnedObject._id
+      delete returnedObject.__v
+    }
+  })
   
 const Blog = mongoose.model('Blog', blogSchema)
 
 const newBlog = new Blog({
-    title:"Testing using supertest library is cool",
-    author:"DEF",
+    title:"HTML is easy",
+    author:"ABC",
     url:"hduwhdajsnxsjansa",
-    likes:5
+    likes:3
 })
 
 newBlog.save()
