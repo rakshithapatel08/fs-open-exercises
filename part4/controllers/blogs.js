@@ -8,10 +8,14 @@ blogRouter.get("/",async(req,res)=>{
 })
 
 blogRouter.post("/",async(req,res)=>{
-    const body = req.body
-    const newBlog = new BlogTest(body)
-
+    let body = req.body
+    
+    if(!body.likes){
+        body.likes = 0
+    }
+    
     try{
+        const newBlog = new BlogTest(body)
         const result = await newBlog.save()
         res.status(201).json(result)
     }
