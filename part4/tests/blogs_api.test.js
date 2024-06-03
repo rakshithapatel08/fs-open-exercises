@@ -79,7 +79,7 @@ test("post request is creating a new blog",async()=>{
     assert(title.includes("React is popular JS library"))
 })
 
-test.only("blog without likes is treated as zero likes",async()=>{
+test("blog without likes is treated as zero likes",async()=>{
     let newBlog = {
         title:"Web development is crazy",
         author:"GHI",
@@ -96,6 +96,21 @@ test.only("blog without likes is treated as zero likes",async()=>{
     assert.strictEqual(response.body.length,initialBlogs.length+1)
 
     assert.strictEqual(response.body[response.body.length-1].likes,0)
+})
+
+test.only("blog without title or url is not added",async()=>{
+    let newBlog = {
+        author:"GHI",
+        url:"wadwaqdxnajsxnas",
+    }
+
+   await api.post("/api/blogs")
+    .send(newBlog)
+    .expect(400)
+
+    const response = await api.get("/api/blogs")
+
+    assert.strictEqual(response.body.length,initialBlogs.length)
 })
 
 after(()=>{
