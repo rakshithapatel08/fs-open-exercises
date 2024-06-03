@@ -26,19 +26,19 @@ mongoose.connect(url)
     }
   })
   
-const Blog = mongoose.model('Blog', blogSchema)
+const BlogTest = mongoose.model('BlogTest', blogSchema)
 
-const newBlog = new Blog({
-    title:"HTML is easy",
-    author:"ABC",
-    url:"hduwhdajsnxsjansa",
-    likes:3
-})
+// const newBlog = new Blog({
+//     title:"HTML is easy",
+//     author:"ABC",
+//     url:"hduwhdajsnxsjansa",
+//     likes:3
+// })
 
-newBlog.save()
-.then(()=>console.log("new blog saved"))
-.catch((error)=>console.log(error.message))
+// newBlog.save()
+// .then(()=>console.log("new blog saved"))
+// .catch((error)=>console.log(error.message))
 
-module.exports = Blog
+module.exports = BlogTest
   
 
