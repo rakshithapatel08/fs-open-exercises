@@ -113,6 +113,21 @@ test.only("blog without title or url is not added",async()=>{
     assert.strictEqual(response.body.length,initialBlogs.length)
 })
 
+test.only("a blog can be deleted",async()=>{
+    const blogsAtStart = await api.get("/api/blogs")
+    const blogToDelete = blogsAtStart.body[0]
+
+    await
+    api.delete(`/api/blogs/${blogToDelete.id}`)
+    .expect(204)
+
+    const blogsAtEnd = await api.get("/api/blogs")
+
+    const titles = blogsAtEnd.body.map((t)=>t.title)
+    assert.strictEqual(blogsAtStart.body.length-1,blogsAtEnd.body.length)
+    assert(!titles.includes(blogToDelete.title))
+})
+
 after(()=>{
     mongoose.connection.close()
 })
