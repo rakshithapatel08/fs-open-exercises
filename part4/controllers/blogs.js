@@ -7,7 +7,7 @@ blogRouter.get("/",async(req,res)=>{
     res.json(blogs)
 })
 
-blogRouter.post("/",async(req,res)=>{
+blogRouter.post("/",async(req,res,next)=>{
     let body = req.body    
     if(!body.likes){
         body.likes = 0
@@ -25,11 +25,23 @@ blogRouter.post("/",async(req,res)=>{
     }
 })
 
-blogRouter.delete("/:id",async(req,res)=>{
+blogRouter.delete("/:id",async(req,res,next)=>{
     const id = req.params.id
     try{
         await BlogTest.findByIdAndDelete(id)
         res.status(204).end()
+    }
+    catch(error){
+        next(error)
+    }
+})
+
+blogRouter.put("/:id",async(req,res,next)=>{
+    const id = req.params.id
+    const updatedBlog = req.body
+    try{
+        const newBlog = await BlogTest.findByIdAndUpdate(id,updatedBlog,{new:true})
+        res.status(200).json(newBlog)
     }
     catch(error){
         next(error)
