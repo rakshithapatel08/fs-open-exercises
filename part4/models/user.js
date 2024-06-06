@@ -9,9 +9,13 @@ mongoose.connect(url)
 userSchema = mongoose.Schema({
     username:{
         type:String,
-        unique:true
+        unique:true,
+        required:true
     },
-    name:String,
+    name:{
+        type:String,
+        required:true
+    },
     hashedPassword:String
 })
 

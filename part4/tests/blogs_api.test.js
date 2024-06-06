@@ -128,7 +128,7 @@ test("a blog can be deleted",async()=>{
     assert(!titles.includes(blogToDelete.title))
 })
 
-test.only("the likes of the blogs are updated",async()=>{
+test("the likes of the blogs are updated",async()=>{
     const blogsAtStart = await api.get("/api/blogs")
     const blogToUpdate = blogsAtStart.body[0]
 
