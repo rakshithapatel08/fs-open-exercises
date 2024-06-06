@@ -10,13 +10,22 @@ userSchema = mongoose.Schema({
     username:{
         type:String,
         unique:true,
-        required:true
+        required:true,
+        minLength:3
     },
     name:{
         type:String,
         required:true
     },
-    hashedPassword:String
+    hashedPassword:{
+        type:String,
+        required:true,
+        minLength:3
+    },
+    blogs:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Blog"
+    }]
 })
 
 userSchema.set('toJSON', {

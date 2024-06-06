@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt")
 const User = require("../models/user")
 
 userRouter.get("/",(req,res)=>{
-    User.find({})
+    User.find({}).populate("blogs",{url:1,title:1,author:1})
     .then((users)=>res.json(users))
     .catch((error)=>console.log(error))
 })
