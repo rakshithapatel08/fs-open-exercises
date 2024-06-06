@@ -4,15 +4,6 @@ const BlogTest = require("../testdb")
 const User = require("../models/user")
 const jwt = require("jsonwebtoken")
 
-//authentication function to get the token
-const getTokenFrom = (request)=>{
-    const authorization = request.get("authorization")
-    if (authorization && authorization.startsWith('Bearer ')) {
-        return authorization.replace('Bearer ', '')
-      }
-      return null
-}
-
 blogRouter.get("/",async(req,res)=>{
     const blogs = await Blog.find({}).populate("user",{ username:1, id:1, name:1 })
     res.json(blogs)
@@ -22,7 +13,7 @@ blogRouter.get("/",async(req,res)=>{
 blogRouter.post("/",async(req,res,next)=>{
     let body = req.body 
 
-    const decodedToken = jwt.verify(getTokenFrom(req),process.env.SECRET)
+    const decodedToken = jwt.verify(req.token,process.env.SECRET)
 
     if(!decodedToken.id){
         return res.status(401).json({error:"Invalid token"})
