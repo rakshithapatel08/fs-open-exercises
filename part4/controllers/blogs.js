@@ -45,10 +45,20 @@ blogRouter.post("/",async(req,res,next)=>{
 })
 
 blogRouter.delete("/:id",async(req,res,next)=>{
+    if(!req.token){
+        return res.status(401).json({error:"missing token"})
+    }
     const id = req.params.id
     try{
-        await Blog.findByIdAndDelete(id)
-        res.status(204).end()
+        let tobeDeleted = await Blog.findById(id)
+        const userLoggedIn = req.token.id
+        if(userLoggedIn.toString() != tobeDeleted.user.toString()){
+            return res.status(401).json({error:"Invalid user"})
+        }
+        else{
+            await Blog.deleteOne(tobeDeleted)
+            res.status(204).end()
+        }       
     }
     catch(error){
         next(error)
