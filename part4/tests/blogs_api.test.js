@@ -65,8 +65,11 @@ test("post request is creating a new blog",async()=>{
         likes:4
     }
 
+    const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ"
+
    await api.post("/api/blogs")
     .send(newBlog)
+    .set({ Authorization: token })
     .expect(201)
     .expect('Content-Type', /application\/json/)
 
@@ -86,8 +89,10 @@ test("blog without likes is treated as zero likes",async()=>{
         url:"wadwaqdxnajsxnas",
     }
 
+     const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ"
    await api.post("/api/blogs")
     .send(newBlog)
+    .set({ Authorization: token })
     .expect(201)
     .expect('Content-Type', /application\/json/)
 
@@ -103,9 +108,10 @@ test("blog without title or url is not added",async()=>{
         author:"GHI",
         url:"wadwaqdxnajsxnas",
     }
-
+   const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ"
    await api.post("/api/blogs")
     .send(newBlog)
+    .set({ Authorization: token })
     .expect(400)
 
     const response = await api.get("/api/blogs")
@@ -117,8 +123,10 @@ test("a blog can be deleted",async()=>{
     const blogsAtStart = await api.get("/api/blogs")
     const blogToDelete = blogsAtStart.body[0]
 
+    const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ"
     await
     api.delete(`/api/blogs/${blogToDelete.id}`)
+    .set({ Authorization: token })
     .expect(204)
 
     const blogsAtEnd = await api.get("/api/blogs")
@@ -145,6 +153,28 @@ test("the likes of the blogs are updated",async()=>{
     
     assert.strictEqual(blogsAtStart.body.length,blogsAtEnd.body.length)
     assert.deepStrictEqual(blogsAtEnd.body[0],updatedBlog)
+})
+
+test.only("post request is creating a new blog fails without a token",async()=>{
+    let newBlog = {
+        title:"React is popular JS library",
+        author:"GHI",
+        url:"wadwaqdxnajsxnas",
+        likes:4
+    }   
+
+   await api.post("/api/blogs")
+    .send(newBlog)
+    .expect(401)
+    .expect('Content-Type', /application\/json/)
+
+    const response = await api.get("/api/blogs")
+
+    const title = response.body.map((t)=>t.title)
+
+    assert.strictEqual(response.body.length,initialBlogs.length)
+
+    assert(!title.includes("React is popular JS library"))
 })
 
 after(()=>{
