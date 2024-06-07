@@ -13,13 +13,11 @@ blogRouter.get("/",async(req,res)=>{
 blogRouter.post("/",async(req,res,next)=>{
     let body = req.body 
 
-    const decodedToken = jwt.verify(req.token,process.env.SECRET)
-
-    if(!decodedToken.id){
+    if(!req.user){
         return res.status(401).json({error:"Invalid token"})
     }
     
-    let user = await User.findById(decodedToken.id)
+    let user = await User.findById(req.user.id)
     if(!body.likes){
         body.likes = 0
     }
@@ -50,9 +48,8 @@ blogRouter.delete("/:id",async(req,res,next)=>{
     }
     const id = req.params.id
     try{
-        const decodedToken = jwt.verify(req.token,process.env.SECRET)
         let tobeDeleted = await Blog.findById(id)
-        const userLoggedIn = decodedToken.id
+        const userLoggedIn = req.user.id
         if(userLoggedIn.toString() != tobeDeleted.user.toString()){
             return res.status(401).json({error:"Invalid user"})
         }
