@@ -10,18 +10,28 @@ const App = () => {
   const [password, setPassword] = useState("")
 
   useEffect(() => {
+    // functionality of showing the blogs of the logged in user is not yet implemented
+    // as of now all the blogs are shown
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
     )  
-  }, [user])
+  },[])
+
+  useEffect(()=>{
+      let userInfo = localStorage.getItem("loggedInUser")
+      if(userInfo){
+        setUser(JSON.parse(userInfo))
+      }
+  },[])
 
   const handleLogin = (e) =>{
     e.preventDefault()
     console.log(e)
     axios.post("/api/login",{username,password})
-    .then(res => setUser(res.data))
+    .then(res => localStorage.setItem("loggedInUser",JSON.stringify(res.data)))
+    .then(res => setUser(res))    
     .then(res => setUsername(""))
-    .then(res => setPassword(""))
+    .then(res => setPassword(""))    
     .catch(error => console.log(error)) 
   }
 
@@ -41,6 +51,10 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <h3>{user.name} has logged in</h3>
+      <button onClick={()=>{
+        localStorage.removeItem("loggedInUser")
+        setUser(null)
+      }}>logout</button>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
