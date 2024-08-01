@@ -9,6 +9,7 @@ userRouter.get("/",(req,res)=>{
     .catch((error)=>console.log(error))
 })
 
+// creating new user
 userRouter.post("/",async(req,res)=>{
     const {username, name, password} = req.body
 
